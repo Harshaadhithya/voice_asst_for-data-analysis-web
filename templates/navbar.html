@@ -1,0 +1,38 @@
+{% load static %}
+
+<!-- Header Section -->
+<header class="header">
+    <div class="container container--narrow">
+      <a class="header__logo">
+        <div style="display: flex;">
+          {% comment %} <img src="{% static 'images/logo1.png' %}" style="width: 40px; height: auto; object-fit: contain;" alt="" /> {% endcomment %}
+          <h3>Voice asst for Data Analysis</h3>
+        </div>
+        
+      </a>
+      <nav class="header__nav">
+        <input type="checkbox" id="responsive-menu" />
+        <label for="responsive-menu" class="toggle-menu">
+          <span>Menu</span>
+          <div class="toggle-menu__lines"></div>
+        </label>
+        <ul class="header__menu">
+          <!-- <li class="header__menuItem"><a >Developers</a></li>
+          <li class="header__menuItem"><a>Projects</a></li>
+          {% if request.user.is_authenticated %}
+          <li class="header__menuItem"><a >Inbox</a></li>
+          <li class="header__menuItem"><a >My Account</a></li>
+          {% endif %} -->
+
+          <li class="header__menuItem"><a href="{% url 'my-analysis' %}">My Analysis</a></li>
+          <li class="header__menuItem"><a >My Account</a></li>
+    
+          {% if request.user.is_authenticated %}
+            <li class="header__menuItem"><a  class="btn btn--sub">Logout</a></li>
+          {% else %}
+            <li class="header__menuItem"><a  class="btn btn--sub">Login/Sign Up</a></li>
+          {% endif %}
+        </ul>
+      </nav>
+    </div>
+  </header>

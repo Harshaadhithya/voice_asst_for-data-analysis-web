@@ -1,0 +1,57 @@
+{% extends 'main.html' %}
+
+{% block content %}
+<main class="projects">
+    <section class="hero-section text-center">
+        <div class="container container--narrow">
+            <div class="hero-section__box">
+                <h2><span>Your Analysis History</span></h2>
+            </div>
+
+            <div class="hero-section__search">
+                <form id="search_form" class="form" action="" method="get">
+                    {% comment %} <a href="{% url 'new-chat' %}" class="btn btn--sub btn--lg">+ Start New Chat</a> {% endcomment %}
+                    <a href={% url 'new-analysis' %} class="btn btn--sub btn--lg">+ Start New Analysis</a>
+
+                </form>
+            </div>
+        </div>
+    </section>
+    <!-- Search Result: DevList -->
+    <section class="projectsList">
+        <div class="container">
+            <div class="grid grid--three">
+
+    
+                {% for my_chat in my_chats %}
+                {% comment %} {% if not my_chat.is_empty %} {% endcomment %}
+                <div class="column">
+                    <div class="card project">
+                        <a class="project" href="{% url 'analyze' my_chat.id %}">
+
+                            <div class="card__body">
+                                <h3 class="project__title">{{my_chat.title}}</h3>
+                                <!-- <p><a class="project__author" href=""></a></p> -->
+                                <!-- <p class="project--rating">
+                                    <span style="font-weight: bold;">20%</span> Postitive
+                                    Feedback
+                                </p> -->
+                                <div class="project__tags">
+
+                                    <span class="tag tag--pill tag--main">
+                                        <small>{{my_chat.updated_at}}</small>
+                                    </span>
+
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                {% comment %} {% endif %} {% endcomment %}
+                {% endfor %}
+
+            </div>
+        </div>
+    </section>
+</main>
+{% endblock %}

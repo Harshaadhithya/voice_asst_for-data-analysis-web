@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+
+
+    <!-- Favicon -->
+    <!-- <link rel="shortcut icon" href="{% static 'images/logo_thumbnail.png'%}" type="image/x-icon" /> -->
+    <!-- Icon - IconMonster -->
+    <link rel="stylesheet" href="https://cdn.iconmonstr.com/1.3.0/css/iconmonstr-iconic-font.min.css" />
+    <!-- Mumble UI -->
+    <link rel="stylesheet" href="{% static 'uikit/styles/uikit.css' %}" />
+
+    <!-- Dev Search UI -->
+    <link rel="stylesheet" href="{% static 'styles/app.css' %}" />
+
+    <!-- <title>SkillHub - Connect with Developers!</title> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Raleway|Ubuntu&display=swap');
+
+        body {
+            background: #e8ebf5;
+            padding: 0;
+            margin: 0;
+            font-family: Raleway;
+        }
+
+        .con {}
+
+        .chat-box {
+            height: 95%;
+
+            /* width: 400px; */
+            width: 100%;
+            position: absolute;
+            margin: 0 auto;
+
+            overflow: hidden;
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: flex;
+            -webkit-box-orient: vertical;
+            -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+            flex-direction: column;
+            z-index: 15;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.005);
+            right: 0;
+            bottom: 0;
+            /* margin: 15px; */
+            background: #fff;
+            /* border-radius: 15px; */
+            /* visibility: hidden; */
+        }
+
+        .chat-box-header {
+            height: 8%;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            display: flex;
+            font-size: 14px;
+            padding: 0.5em 0;
+            box-shadow: 0 0 3px rgba(0, 0, 0, .2);
+            box-shadow: 0 0 3px rgba(0, 0, 0, .2), 0 -1px 10px rgba(172, 54, 195, 0.3);
+            box-shadow: 0 1px 10px rgba(0, 0, 0, 0.025);
+        }
+
+        .chat-box-header h3 {
+            font-family: ubuntu;
+            font-weight: 400;
+            float: left;
+            position: absolute;
+            left: 25px;
+        }
+
+        .chat-box-header p {
+            float: right;
+            position: absolute;
+            right: 16px;
+            cursor: pointer;
+            height: 50px;
+            width: 50px;
+            text-align: center;
+            line-height: 3.25;
+            margin: 0;
+        }
+
+        .chat-box-body {
+            height: 95%;
+            background: #f8f8f8;
+            overflow-y: scroll;
+            padding: 25px;
+        }
+
+        .chat-box-body-send {
+            width: 250px;
+            float: right;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .045);
+            margin-bottom: 14px;
+        }
+
+        .chat-box-body-send p {
+            margin: 0;
+            color: #444;
+            font-size: 14px;
+            margin-bottom: 0.25rem;
+        }
+
+        .chat-box-body-send span {
+            float: right;
+            color: #777;
+            font-size: 10px;
+        }
+
+        .chat-box-body-receive {
+            width: 250px;
+            float: left;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 2rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, .070);
+            margin-bottom: 14px;
+        }
+
+        .chat-box-body-receive p {
+            margin: 0;
+            color: #444;
+            font-size: 14px;
+            margin-bottom: 0.25rem;
+        }
+
+        .chat-box-body-receive span {
+            float: right;
+            color: #777;
+            font-size: 10px;
+        }
+
+        .chat-box-body::-webkit-scrollbar {
+            width: 5px;
+            opacity: 0;
+        }
+
+        .chat-box-footer {
+            position: relative;
+            padding: 0.5rem;
+            display: flex;
+        }
+
+        .chat-box-footer button {
+            border: none;
+            /* padding: 16px; */
+            font-size: 14px;
+            background: white;
+            cursor: pointer;
+        }
+
+        .chat-box-footer button:focus {
+            outline: none;
+        }
+
+        .chat-box-footer input {
+            padding: 10px;
+            border: none;
+            -webkit-appearance: none;
+            border-radius: 50px;
+            background: whitesmoke;
+            margin: 10px;
+            font-family: ubuntu;
+            font-weight: 600;
+            color: #444;
+            width: 90%;
+            height: 80px;
+        }
+
+        .chat-box-footer input:focus {
+            outline: none;
+        }
+
+        .chat-box-footer .send {
+            vertical-align: middle;
+            align-items: center;
+            justify-content: center;
+            transform: translate(0px, 20px);
+            cursor: pointer;
+        }
+
+        .chat-button {
+            padding: 25px 16px;
+            background: #2c50ef;
+            width: 120px;
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            margin: 15px;
+            border-top-left-radius: 25px;
+            border-top-right-radius: 25px;
+            border-bottom-left-radius: 25px;
+            box-shadow: 0 2px 15px rgba(44, 80, 239, .21);
+            cursor: pointer;
+        }
+
+        .chat-button span::before {
+            content: '';
+            height: 15px;
+            width: 15px;
+            background: #47cf73;
+            position: absolute;
+            transform: translate(0, -7px);
+            border-radius: 15px;
+        }
+
+        .chat-button span::after {
+            content: "Message Us";
+            font-size: 14px;
+            color: white;
+            position: absolute;
+            left: 50px;
+            top: 18px;
+        }
+
+        .modal {
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transform: scale(1.1);
+            transition: visibility 0s linear 0.25s, opacity 0.25s 0s, transform 0.25s;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: white;
+            padding: 1rem 1.5rem;
+            width: 24rem;
+            border-radius: 0.5rem;
+        }
+
+        .modal-close-button {
+            float: right;
+            width: 1.5rem;
+            line-height: 1.5rem;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 0.25rem;
+            background-color: lightgray;
+        }
+
+        .close-button:hover {
+            background-color: darkgray;
+        }
+
+        .show-modal {
+            opacity: 1;
+            visibility: visible;
+            transform: scale(1);
+            transition: visibility 0s linear 0s, opacity 0.25s 0s, transform 0.25s;
+            z-index: 30;
+        }
+
+        @media screen and (max-width: 450px) {
+            .chat-box {
+                min-width: 100% !important;
+            }
+        }
+
+        .floating-mic {
+            position: fixed;
+            bottom: 20px;
+            /* Adjust the distance from the bottom as needed */
+            right: 20px;
+            /* Adjust the distance from the right as needed */
+            background-color: #007bff;
+            /* Background color of the icon */
+            color: #fff;
+            /* Color of the icon */
+            border-radius: 50%;
+            /* Makes it a circle */
+            width: 50px;
+            /* Adjust the size as needed */
+            height: 50px;
+            /* Adjust the size as needed */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.5);
+            /* Optional shadow effect */
+            z-index: 999;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'navbar.html' %}
+
+
+
+    {% if messages %}
+
+    {% for message in messages %}
+    <div class="alert  alert--{{message.tags}}">
+        <p class="alert__message">{{message}}</p>
+        <button class="alert__close">x</button>
+    </div>
+
+
+    {% endfor %}
+
+    {% endif %}
+
+
+    {% block content %}
+    <!-- <div class="floating-mic">
+        <i class="fas fa-microphone"></i>
+    </div> -->
+
+    <div class="chat-box" style="background-color: #2d2d39;" id="chat-box">
+        <div class="chat-box-header">
+            <!-- <h3>Message Us</h3> -->
+            <p>
+                <i class="fa fa-times"></i>
+            </p>
+        </div>
+        <div class="chat-box-body">
+            <a href="{% url 'my-chats' %}">Back to my chats</a>
+            {% for chat_message in chat_messages %}
+                {% if chat_message.messager_type == 'user' %}
+                    <div class="con" style="display: flex; width: 100%; justify-content: flex-end;">
+                        <div class="chat-box-body-receive">
+                            <p>{{chat_message.message}}</p>
+                            <span>{{chat_message.created_at}}</span>
+                        </div>
+                    </div>
+                {% else %}
+                    <div class="con" style="display: flex; width: 100%; justify-content: flex-start;">
+                        <div class="chat-box-body-receive">
+                            <p>{{chat_message.message}}</p>
+                            <span>{{chat_message.created_at}}</span>
+                        </div>
+                    </div>
+                    {% if chat_message.audio %}
+                        <audio id="bot-audio-{{ chat_message.id }}" controls>
+                            <source src="{{ chat_message.audio.url }}" type="audio/mpeg">
+                            Your browser does not support the audio element.
+                        </audio>
+                    {% endif %}
+                    {% if chat_message.feedback %}
+                        <div>
+                            <p>Your Feedback: </p>
+                            {% if chat_message.feedback == 'helpful' %}
+                                <img src="{% static 'images/up.png' %}" style="width: 16px; height: 16px; object-fit: contain;" alt="">
+                            {% else %}
+                                <img src="{% static 'images/down.png' %}" style="width: 16px; height: 16px; object-fit: contain;" alt="">
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        {% if last_message_id == chat_message.id and chat_message.messager_type == 'bot' %}
+                        <div>
+                            <div style="display: flex; gap: 4px;">
+                                <p>Was this useful?</p>
+                                <a href="{% url 'record-feedback-up' chat_message.id %}" style="width: 16px; height: 16px;">
+                                    <img src="{% static 'images/up.png' %}" style="width: 100%; height: auto; object-fit: contain;" alt="">
+                                </a>
+                                <a href="{% url 'record-feedback-down' chat_message.id %}" style="width: 16px; height: 16px;">
+                                    <img src="{% static 'images/down.png' %}" style="width: 100%; height: auto; object-fit: contain;" alt="">
+                                </a>
+                            </div>
+                        </div>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            {% endfor %}
+            <!-- <div class="con" style="display: flex; width: 100%; justify-content: flex-end;">
+                <div class="chat-box-body-receive">
+                    <p>Hi there! I recently had a baby, and I'm not feeling quite like myself. I've been feeling really
+                        down and overwhelmed.</p>
+                    <span>12:10</span>
+                </div>
+
+            </div>
+
+            <div class="con" style="display: flex; width: 100%; justify-content: flex-start;">
+                <div class="chat-box-body-send">
+                    <p> Hi! I'm here to help you. It's not uncommon to feel this way after having a baby. I'll ask you a
+                        few questions to get a better understanding.</p>
+                    <span>12:10</span>
+                </div>
+                <i class="fas fa-volume-up"></i>
+            </div>
+
+            <div class="con" style="display: flex; width: 100%; justify-content: flex-end;">
+                <div class="chat-box-body-receive">
+                    <p>I'm not sure if it's just the typical baby blues or something more serious. Can you help me
+                        figure it out?</p>
+                    <span>12:13</span>
+                </div>
+            </div>
+            <div class="con" style="display: flex; width: 100%; justify-content: flex-start;">
+                <div class="chat-box-body-send">
+                    <p>How long have you been experiencing these feelings, and can you tell me more about the specific
+                        symptoms you're noticing?</p>
+                    <span>12:13</span>
+                </div>
+                <i class="fas fa-volume-up"></i>
+
+            </div>
+
+            <div class="con" style="display: flex; width: 100%; justify-content: flex-end;">
+                <div class="chat-box-body-receive">
+                    <p>Thanks for being here. I've been feeling this way for about four weeks now. I cry a lot, have
+                        difficulty sleeping, and I don't find joy in the things I used to enjoy.</p>
+                    <span>12:15</span>
+                </div>
+            </div>
+
+            <div class="con" style="display: flex; width: 100%; justify-content: flex-start;">
+                <div class="chat-box-body-send">
+                    <p>I appreciate your openness. It's important to address these feelings. The symptoms you've
+                        mentioned can be indicative of postpartum depression (PPD).</p>
+                    <span>12:17</span>
+                </div>
+                <i class="fas fa-volume-up"></i>
+
+            </div>
+
+            <div class="con" style="display: flex; width: 100%; justify-content: flex-end;">
+                <div class="chat-box-body-receive">
+                    <p>I've never experienced this before. I don't have a history of mental health issues either. It's
+                        just since giving birth.</p>
+                    <span>12:18</span>
+                </div>
+            </div>
+            <div class="con" style="display: flex; width: 100%; justify-content: flex-start;">
+                <div class="chat-box-body-send">
+                    <p>Thank you for sharing that. PPD can affect anyone, even those without a history of mental health
+                        issues.
+                        It's important to remember that seeking help is a sign of strength, and you're not alone in
+                        this. I recommend discussing your symptoms with a healthcare professional, like your OB-GYN or a
+                        mental health counselor, for a proper assessment.
+                    </p>
+                    <span>12:20</span>
+                </div>
+                <i class="fas fa-volume-up"></i>
+
+            </div> -->
+
+
+
+
+        </div>
+        <form action="" method="post">
+            {% csrf_token %}
+            <div class="chat-box-footer" style="background-color: #2d2d39;">
+                <input placeholder="Enter Your Message" type="text" name="message">
+                <div style="width:80px;">
+                    <input type="Submit" value="Send" style="border-radius: 10px; background: #5aa5b9;">
+                </div>
+                <!-- <i class="send far fa-paper-plane" style="color: white;"></i> -->
+            </div>
+           
+            
+        </form>
+        
+    </div>
+
+
+    <div class="chat-button">
+        <span></span>
+    </div>
+
+
+    <div class="modal">
+        <div class="modal-content">
+            <span class="modal-close-button">&times;</span>
+            <h1>Add What you want here.</h1>
+        </div>
+    </div>
+
+    <script>
+    
+//         let mediaRecorder;
+        
+
+//         var recordedChunks = []; // Assuming you're recording audio using MediaRecorder
+
+// function startRecording() {
+//     navigator.mediaDevices.getUserMedia({ audio: true })
+//         .then(function(stream) {
+//             mediaRecorder = new MediaRecorder(stream);
+//             mediaRecorder.ondataavailable = function(event) {
+//                 recordedChunks.push(event.data);
+//             };
+//             mediaRecorder.start();
+//             document.getElementById("recordButton").disabled = true;
+//             document.getElementById("stopButton").disabled = false;
+//             document.getElementById("recordingStatus").innerText = "Recording...";
+//         })
+//         .catch(function(err) {
+//             console.error("Error accessing microphone:", err);
+//         });
+// }
+
+// function stopRecording() {
+//     mediaRecorder.stop();
+//     document.getElementById("recordButton").disabled = false;
+//     document.getElementById("stopButton").disabled = true;
+//     document.getElementById("recordingStatus").innerText = "Recording stopped";
+
+//     mediaRecorder.onstop = function() {
+//         var audioBlob = new Blob(recordedChunks, { type: 'audio/webm' });
+//         var reader = new FileReader();
+//         reader.onloadend = function() {
+//             document.getElementById("audioData").value = reader.result; // Set the audio data to the hidden input field
+//             document.getElementById("submitAudioButton").disabled = false; // Enable the submit button
+//         };
+//         reader.readAsDataURL(audioBlob);
+//     };
+// }
+
+        var latestBotResponseId = "{{ newly_created_id }}";
+        console.log(latestBotResponseId)
+    
+        var latestBotAudio = document.getElementById("bot-audio-" + latestBotResponseId);
+        console.log(latestBotAudio)
+        if (latestBotAudio) {
+            latestBotAudio.play();
+        }
+    </script>
+      
+
+    {% endblock %}
+</body>
+<script src="{% static 'uikit/app.js' %}"></script>
+<script src="{% static 'js/main.js' %}"></script>
+
+</html>
